@@ -16,15 +16,13 @@ body {
   padding: 80px 20px;
 }
 #title {
-  font-size: 80px; /* very large title */
+  font-size: 80px;
   font-weight: 700;
   margin-bottom: 60px;
   text-shadow: 3px 3px 10px rgba(0,0,0,0.6);
 }
-
-/* Beautiful countdown box */
 #countdown {
-  font-size: 72px; /* huge countdown text */
+  font-size: 72px;
   margin-top: 30px;
   padding: 50px;
   background: linear-gradient(145deg, rgba(255,255,255,0.15), rgba(0,0,0,0.2));
@@ -33,6 +31,32 @@ body {
   min-width: 500px;
   white-space: pre-line;
   box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  text-align: center;
+}
+#linkBox {
+  margin-top: 40px;
+}
+input#timerLink {
+  font-size: 28px;
+  padding: 16px;
+  width: 80%;
+  border-radius: 12px;
+  border: none;
+  text-align: center;
+}
+button#copyBtn {
+  font-size: 28px;
+  padding: 16px;
+  border-radius: 12px;
+  border: none;
+  background-color: #f1c40f;
+  color: #000;
+  font-weight: bold;
+  margin-left: 10px;
+  cursor: pointer;
+}
+button#copyBtn:hover {
+  background-color: #f4d03f;
 }
 </style>
 </head>
@@ -40,6 +64,11 @@ body {
 
 <h1 id="title"></h1>
 <p id="countdown"></p>
+
+<div id="linkBox">
+  <input type="text" id="timerLink" readonly>
+  <button id="copyBtn" onclick="copyLink()">Copy Link</button>
+</div>
 
 <script>
 function formatTimeInZone(date) {
@@ -52,10 +81,21 @@ function formatTimeInZone(date) {
     }).format(date);
 }
 
+function copyLink() {
+    const linkInput = document.getElementById("timerLink");
+    linkInput.select();
+    linkInput.setSelectionRange(0, 99999); 
+    document.execCommand("copy");
+    alert("Link copied to clipboard!");
+}
+
 const params = new URLSearchParams(window.location.search);
 const title = params.get('title') || "";
 const startParam = params.get('start');
 const endParam = params.get('end');
+
+const currentURL = window.location.href;
+document.getElementById('timerLink').value = currentURL;
 
 if (!startParam || !endParam) {
     document.getElementById('countdown').innerText = "Error: start or end time missing!";
@@ -67,26 +107,38 @@ if (!startParam || !endParam) {
 
     const interval = setInterval(() => {
         const now = new Date();
-        let displayText = "";
+        let line1 = "";
+        let line2 = "";
+        let line3 = "";
+        let line4 = "";
 
         if (now < start) {
             const diff = start - now;
             const h = Math.floor(diff / (1000*60*60));
             const m = Math.floor((diff % (1000*60*60)) / (1000*60));
             const s = Math.floor((diff % (1000*60)) / 1000);
-            displayText = `Event starts in: ${h}h ${m}m ${s}s\nStart: ${formatTimeInZone(start)}`;
+            line1 = "Starts in:";
+            line2 = `${h}h ${m}m ${s}s`;
+            line3 = "Start:";
+            line4 = formatTimeInZone(start);
         } else if (now >= start && now <= end) {
             const diff = end - now;
             const h = Math.floor(diff / (1000*60*60));
             const m = Math.floor((diff % (1000*60*60)) / (1000*60));
             const s = Math.floor((diff % (1000*60)) / 1000);
-            displayText = `Event is live! Ends in: ${h}h ${m}m ${s}s\nEnd: ${formatTimeInZone(end)}`;
+            line1 = "Live:";
+            line2 = `${h}h ${m}m ${s}s`;
+            line3 = "End:";
+            line4 = formatTimeInZone(end);
         } else {
-            displayText = "Event has ended!";
+            line1 = "Event has ended!";
+            line2 = "";
+            line3 = "";
+            line4 = "";
             clearInterval(interval);
         }
 
-        document.getElementById('countdown').innerText = displayText;
+        document.getElementById('countdown').innerText = `${line1}\n${line2}\n\n${line3}\n${line4}`;
     }, 1000);
 }
 </script>
