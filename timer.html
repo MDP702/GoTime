@@ -15,12 +15,14 @@ body {
   text-align: center;
   padding: 80px 20px;
 }
+
 #title {
   font-size: 80px;
   font-weight: 700;
   margin-bottom: 60px;
   text-shadow: 3px 3px 10px rgba(0,0,0,0.6);
 }
+
 #countdown {
   font-size: 72px;
   margin-top: 30px;
@@ -33,34 +35,67 @@ body {
   box-shadow: 0 10px 25px rgba(0,0,0,0.5);
   text-align: center;
 }
+
 #countdown .status {
-  font-size: 80px; /* extra big for Live/Ended */
+  font-size: 80px;
   font-weight: 700;
-  color: #ffeb3b;
+  color: #ffeb3b; 
   text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
 }
+
+#countdown .starts {
+  color: #00ffd1; 
+}
+
+#countdown .ended {
+  color: #ff6b6b; 
+}
+
+#countdown .number {
+  font-size: 90px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #ff6b6b, #ffeb3b, #00ffd1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 15px rgba(255,255,255,0.3);
+  display: block;
+  margin: 20px 0;
+}
+
 #linkBox {
   margin-top: 40px;
+  background: rgba(0,0,0,0.25);
+  padding: 30px;
+  border-radius: 30px;
+  display: inline-block;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
 }
+
 input#timerLink {
   font-size: 28px;
   padding: 16px;
   width: 80%;
-  border-radius: 12px;
+  border-radius: 16px;
   border: none;
   text-align: center;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  box-shadow: inset 0 5px 10px rgba(0,0,0,0.3);
 }
+
 button#copyBtn {
   font-size: 28px;
   padding: 16px;
-  border-radius: 12px;
+  border-radius: 16px;
   border: none;
   background-color: #f1c40f;
   color: #000;
   font-weight: bold;
   margin-left: 10px;
   cursor: pointer;
+  transition: 0.3s;
 }
+
 button#copyBtn:hover {
   background-color: #f4d03f;
 }
@@ -81,8 +116,13 @@ function formatTimeInZone(date) {
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
     return new Intl.DateTimeFormat([], {
         timeZone: tz,
-        year: 'numeric', month: '2-digit', day: '2-digit',
-        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
         hour12: false
     }).format(date);
 }
@@ -104,7 +144,7 @@ const currentURL = window.location.href;
 document.getElementById('timerLink').value = currentURL;
 
 if (!startParam || !endParam) {
-    document.getElementById('countdown').innerHTML = "<span class='status'>Error: start or end time missing!</span>";
+    document.getElementById('countdown').innerHTML = "<span class='ended status'>Error: start or end time missing!</span>";
     document.getElementById('title').innerText = title;
 } else {
     const start = new Date(startParam);
@@ -123,8 +163,8 @@ if (!startParam || !endParam) {
             const h = Math.floor(diff / (1000*60*60));
             const m = Math.floor((diff % (1000*60*60)) / (1000*60));
             const s = Math.floor((diff % (1000*60)) / 1000);
-            line1 = "Starts in:";
-            line2 = `${h}h ${m}m ${s}s`;
+            line1 = "<span class='starts'>Starts in:</span>";
+            line2 = `<span class='number'>${h}h ${m}m ${s}s</span>`;
             line3 = "Start:";
             line4 = formatTimeInZone(start);
         } else if (now >= start && now <= end) {
@@ -133,11 +173,11 @@ if (!startParam || !endParam) {
             const m = Math.floor((diff % (1000*60*60)) / (1000*60));
             const s = Math.floor((diff % (1000*60)) / 1000);
             line1 = "<span class='status'>Live:</span>";
-            line2 = `${h}h ${m}m ${s}s`;
+            line2 = `<span class='number'>${h}h ${m}m ${s}s</span>`;
             line3 = "End:";
             line4 = formatTimeInZone(end);
         } else {
-            line1 = "<span class='status'>Event has ended!</span>";
+            line1 = "<span class='ended status'>Event has ended!</span>";
             line2 = "";
             line3 = "";
             line4 = "";
