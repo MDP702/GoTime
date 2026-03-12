@@ -7,38 +7,41 @@
 <style>
 body {
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #4a90e2, #50c0e9); /* soft blue gradient */
+  background: linear-gradient(135deg, #4a90e2, #50c0e9);
   text-align: center;
   padding: 80px 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-#title {
+h1#title {
   font-size: 80px;
   font-weight: 700;
-  margin-bottom: 60px;
+  margin-bottom: 50px;
   color: #fff;
   text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
 }
 
-#countdown {
-  font-size: 72px;
-  margin-top: 30px;
-  padding: 50px;
-  background: linear-gradient(145deg, #4a90e2, #357ABD); /* 3D blue gradient */
+#countdownCard {
+  background: linear-gradient(145deg, #4a90e2, #357ABD);
   border-radius: 40px;
-  display: inline-block;
   min-width: 500px;
-  white-space: pre-line;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 30px;
   box-shadow: 10px 10px 30px rgba(0,0,0,0.3), -5px -5px 20px rgba(255,255,255,0.2);
-  text-align: center;
 }
 
 #countdown .number {
-  font-size: 100px;
+  font-size: 140px;
   font-weight: 700;
   color: #fff;
-  text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
-  display: block;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
   margin: 20px 0;
 }
 
@@ -51,24 +54,29 @@ body {
 }
 
 #linkBox {
-  margin-top: 40px;
+  margin-top: 50px;
   background: linear-gradient(145deg, #4a90e2, #357ABD);
   padding: 30px;
-  border-radius: 30px;
-  display: inline-block;
+  border-radius: 40px;
+  max-width: 600px;
+  min-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   box-shadow: 10px 10px 30px rgba(0,0,0,0.3), -5px -5px 20px rgba(255,255,255,0.2);
 }
 
 input#timerLink {
   font-size: 28px;
   padding: 16px;
-  width: 80%;
+  width: 95%;
   border-radius: 16px;
   border: none;
   text-align: center;
   background: rgba(255,255,255,0.2);
   color: #fff;
   text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  margin-bottom: 15px;
 }
 
 button#copyBtn {
@@ -76,23 +84,28 @@ button#copyBtn {
   padding: 16px;
   border-radius: 16px;
   border: none;
-  background-color: #f1c40f;
+  background: linear-gradient(135deg, #f1c40f, #f9e79f);
   color: #000;
   font-weight: bold;
-  margin-left: 10px;
   cursor: pointer;
+  width: 95%;
+  box-shadow: 0 6px 20px rgba(241,196,15,0.4), inset 0 -2px 5px rgba(0,0,0,0.1);
   transition: 0.3s;
 }
 
 button#copyBtn:hover {
-  background-color: #f4d03f;
+  background: linear-gradient(135deg, #f9e79f, #f1c40f);
+  box-shadow: 0 10px 30px rgba(241,196,15,0.6), inset 0 -2px 5px rgba(0,0,0,0.1);
 }
 </style>
 </head>
 <body>
 
 <h1 id="title"></h1>
-<p id="countdown"></p>
+
+<div id="countdownCard">
+  <div id="countdown">Loading timer...</div>
+</div>
 
 <div id="linkBox">
   <input type="text" id="timerLink" readonly>
@@ -102,15 +115,8 @@ button#copyBtn:hover {
 <script>
 function formatTimeLines(date) {
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-    // Line 1: Weekday – Time
-    const optionsLine1 = { weekday:'long', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false, timeZone: tz };
-    const line1 = new Intl.DateTimeFormat([], optionsLine1).format(date);
-
-    // Line 2: Date, Month Year
-    const optionsLine2 = { day:'2-digit', month:'long', year:'numeric', timeZone: tz };
-    const line2 = new Intl.DateTimeFormat([], optionsLine2).format(date);
-
+    const line1 = new Intl.DateTimeFormat([], { weekday:'long', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false, timeZone: tz }).format(date);
+    const line2 = new Intl.DateTimeFormat([], { day:'2-digit', month:'long', year:'numeric', timeZone: tz }).format(date);
     return [line1, line2];
 }
 
@@ -127,16 +133,15 @@ const title = params.get('title') || "";
 const startParam = params.get('start');
 const endParam = params.get('end');
 
-const currentURL = window.location.href;
-document.getElementById('timerLink').value = currentURL;
+document.getElementById('title').innerText = title;
+document.getElementById('timerLink').value = window.location.href;
 
 if (!startParam || !endParam) {
-    document.getElementById('countdown').innerHTML = "<span class='status'>Error: start or end time missing!</span>";
-    document.getElementById('title').innerText = title;
+    document.getElementById('countdown').innerHTML = "Error: start or end time missing!";
 } else {
     const start = new Date(startParam);
     const end = new Date(endParam);
-    document.getElementById('title').innerText = title;
+    const countdownDiv = document.getElementById('countdown');
 
     const interval = setInterval(() => {
         const now = new Date();
@@ -173,7 +178,7 @@ if (!startParam || !endParam) {
             clearInterval(interval);
         }
 
-        document.getElementById('countdown').innerHTML = `${line1}\n${line2}\n${line3}\n${line4}`;
+        countdownDiv.innerHTML = `${line1}\n${line2}\n${line3}\n${line4}`;
     }, 1000);
 }
 </script>
