@@ -3,184 +3,263 @@
 <head>
 <meta charset="UTF-8">
 <title>Its Go Time</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+
 <style>
-body {
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #4a90e2, #50c0e9);
-  text-align: center;
-  padding: 80px 20px;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+
+body{
+font-family:'Poppins',sans-serif;
+background:linear-gradient(135deg,#4a90e2,#50c0e9);
+text-align:center;
+padding:80px 20px;
+display:flex;
+flex-direction:column;
+align-items:center;
 }
 
-h1#title {
-  font-size: 80px;
-  font-weight: 700;
-  margin-bottom: 50px;
-  color: #fff;
-  text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+#title{
+font-size:80px;
+font-weight:700;
+margin-bottom:50px;
+color:white;
+text-shadow:2px 2px 6px rgba(0,0,0,0.5);
 }
 
-#countdownCard {
-  background: linear-gradient(145deg, #6FA8DC, #4A90E2);
-  border-radius: 50px;
-  min-width: 600px;
-  max-width: 800px;
-  padding: 60px 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 10px 10px 30px rgba(0,0,0,0.3), -5px -5px 20px rgba(255,255,255,0.2);
+#countdownCard{
+background:linear-gradient(145deg,#6FA8DC,#4A90E2);
+border-radius:50px;
+min-width:600px;
+max-width:800px;
+padding:70px 60px;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+box-shadow:10px 10px 30px rgba(0,0,0,0.3),-5px -5px 20px rgba(255,255,255,0.2);
 }
 
-#countdown .number {
-  font-size: 72px; /* one line countdown */
-  font-weight: 700;
-  color: #fff;
-  text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
-  margin: 20px 0;
+/* LINE 1 */
+.status{
+font-size:56px;
+font-weight:700;
+color:white;
+letter-spacing:2px;
+margin-bottom:10px;
+text-shadow:0 3px 6px rgba(0,0,0,0.6);
 }
 
-#countdown .eventTime {
-  font-size: 48px; /* bigger than before */
-  color: #fff;
-  text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
-  margin: 15px 0;
-  line-height: 1.4;
+/* LINE 2 */
+.number{
+font-size:80px;
+font-weight:700;
+color:white;
+margin:10px 0;
+text-shadow:2px 2px 8px rgba(0,0,0,0.7);
 }
 
-#linkBox {
-  margin-top: 50px;
-  background: linear-gradient(145deg, #6FA8DC, #4A90E2);
-  padding: 40px;
-  border-radius: 50px;
-  max-width: 800px;
-  min-width: 600px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 10px 10px 30px rgba(0,0,0,0.3), -5px -5px 20px rgba(255,255,255,0.2);
+/* LINE 3 spacer */
+.spacer{
+height:28px;
 }
 
-input#timerLink {
-  font-size: 28px;
-  padding: 16px;
-  width: 95%;
-  border-radius: 16px;
-  border: none;
-  text-align: center;
-  background: rgba(255,255,255,0.2);
-  color: #fff;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-  margin-bottom: 15px;
+/* LINE 4 */
+.eventLine1{
+font-size:48px;
+color:white;
+margin-bottom:6px;
+text-shadow:1px 1px 4px rgba(0,0,0,0.5);
 }
 
-button#copyBtn {
-  font-size: 28px;
-  padding: 16px;
-  border-radius: 16px;
-  border: none;
-  background: linear-gradient(135deg, #f1c40f, #f9e79f);
-  color: #000;
-  font-weight: bold;
-  cursor: pointer;
-  width: 95%;
-  box-shadow: 0 6px 20px rgba(241,196,15,0.4), inset 0 -2px 5px rgba(0,0,0,0.1);
-  transition: 0.3s;
+/* LINE 5 */
+.eventLine2{
+font-size:48px;
+color:white;
+text-shadow:1px 1px 4px rgba(0,0,0,0.5);
 }
 
-button#copyBtn:hover {
-  background: linear-gradient(135deg, #f9e79f, #f1c40f);
-  box-shadow: 0 10px 30px rgba(241,196,15,0.6), inset 0 -2px 5px rgba(0,0,0,0.1);
+#linkBox{
+margin-top:50px;
+background:linear-gradient(145deg,#6FA8DC,#4A90E2);
+padding:35px;
+border-radius:50px;
+min-width:600px;
+max-width:800px;
+display:flex;
+flex-direction:column;
+align-items:center;
+box-shadow:10px 10px 30px rgba(0,0,0,0.3),-5px -5px 20px rgba(255,255,255,0.2);
 }
+
+#timerLink{
+font-size:26px;
+padding:16px;
+width:95%;
+border-radius:16px;
+border:none;
+text-align:center;
+background:rgba(255,255,255,0.2);
+color:white;
+margin-bottom:15px;
+}
+
+#copyBtn{
+font-size:26px;
+padding:16px;
+border-radius:16px;
+border:none;
+background:linear-gradient(135deg,#f1c40f,#f9e79f);
+color:black;
+font-weight:bold;
+cursor:pointer;
+width:95%;
+}
+
 </style>
 </head>
+
 <body>
 
 <h1 id="title"></h1>
 
 <div id="countdownCard">
-  <div id="countdown">Loading timer...</div>
+<div id="countdown">Loading...</div>
 </div>
 
 <div id="linkBox">
-  <input type="text" id="timerLink" readonly>
-  <button id="copyBtn" onclick="copyLink()">Copy Link</button>
+<input type="text" id="timerLink" readonly>
+<button id="copyBtn" onclick="copyLink()">Copy Link</button>
 </div>
 
 <script>
-function formatTimeLines(date) {
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const line1 = new Intl.DateTimeFormat([], { weekday:'long', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false, timeZone: tz }).format(date);
-    const line2 = new Intl.DateTimeFormat([], { day:'2-digit', month:'long', year:'numeric', timeZone: tz }).format(date);
-    return [line1, line2];
+
+function formatTimeLines(date){
+
+const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+const line1 =
+new Intl.DateTimeFormat([],{
+weekday:'long',
+hour:'2-digit',
+minute:'2-digit',
+second:'2-digit',
+hour12:false,
+timeZone:tz
+}).format(date);
+
+const line2 =
+new Intl.DateTimeFormat([],{
+day:'2-digit',
+month:'long',
+year:'numeric',
+timeZone:tz
+}).format(date);
+
+return [line1,line2];
+
 }
 
-function copyLink() {
-    const linkInput = document.getElementById("timerLink");
-    linkInput.select();
-    linkInput.setSelectionRange(0, 99999); 
-    document.execCommand("copy");
-    alert("Link copied to clipboard!");
+function copyLink(){
+
+const linkInput=document.getElementById("timerLink");
+
+linkInput.select();
+document.execCommand("copy");
+
+alert("Link copied!");
+
 }
 
-const params = new URLSearchParams(window.location.search);
-const title = params.get('title') || "";
-const startParam = params.get('start');
-const endParam = params.get('end');
+const params=new URLSearchParams(window.location.search);
 
-document.getElementById('title').innerText = title;
-document.getElementById('timerLink').value = window.location.href;
+const title=params.get('title')||"";
 
-if (!startParam || !endParam) {
-    document.getElementById('countdown').innerHTML = "Error: start or end time missing!";
-} else {
-    const start = new Date(startParam);
-    const end = new Date(endParam);
-    const countdownDiv = document.getElementById('countdown');
+const startParam=params.get('start');
 
-    const interval = setInterval(() => {
-        const now = new Date();
-        let line1="", line2="", line3="", line4="";
+const endParam=params.get('end');
 
-        const [startLine1, startLine2] = formatTimeLines(start);
-        const [endLine1, endLine2] = formatTimeLines(end);
+document.getElementById('title').innerText=title;
 
-        if (now < start) {
-            const diff = start - now;
-            const h = Math.floor(diff / (1000*60*60));
-            const m = Math.floor((diff % (1000*60*60)) / (1000*60));
-            const s = Math.floor((diff % (1000*60)) / 1000);
+document.getElementById('timerLink').value=window.location.href;
 
-            line1 = "START";
-            line2 = `<span class='number'>${h}h ${m}m ${s}s</span>`;
-            line3 = `<span class='eventTime'>${startLine1}</span>`;  // Weekday – Time
-            line4 = `<span class='eventTime'>${startLine2}</span>`;  // Day Month Year
-        } else if (now >= start && now <= end) {
-            const diff = end - now;
-            const h = Math.floor(diff / (1000*60*60));
-            const m = Math.floor((diff % (1000*60*60)) / (1000*60));
-            const s = Math.floor((diff % (1000*60)) / 1000);
+if(!startParam||!endParam){
 
-            line1 = "LIVE";
-            line2 = `<span class='number'>${h}h ${m}m ${s}s</span>`;
-            line3 = `<span class='eventTime'>${endLine1}</span>`;
-            line4 = `<span class='eventTime'>${endLine2}</span>`;
-        } else {
-            line1 = "ENDED";
-            line2 = "";
-            line3 = "";
-            line4 = "";
-            clearInterval(interval);
-        }
+document.getElementById('countdown').innerHTML="Timer error";
 
-        countdownDiv.innerHTML = `${line1}\n${line2}\n${line3}\n${line4}`;
-    }, 1000);
+}else{
+
+const start=new Date(startParam);
+
+const end=new Date(endParam);
+
+const countdownDiv=document.getElementById('countdown');
+
+const interval=setInterval(()=>{
+
+const now=new Date();
+
+let line1,line2,line3,line4;
+
+const [startLine1,startLine2]=formatTimeLines(start);
+
+const [endLine1,endLine2]=formatTimeLines(end);
+
+if(now<start){
+
+const diff=start-now;
+
+const h=Math.floor(diff/(1000*60*60));
+
+const m=Math.floor((diff%(1000*60*60))/(1000*60));
+
+const s=Math.floor((diff%(1000*60))/1000);
+
+line1="Starts in";
+line2=`${h}h ${m}m ${s}s`;
+line3=startLine1;
+line4=startLine2;
+
 }
+
+else if(now>=start&&now<=end){
+
+const diff=end-now;
+
+const h=Math.floor(diff/(1000*60*60));
+
+const m=Math.floor((diff%(1000*60*60))/(1000*60));
+
+const s=Math.floor((diff%(1000*60))/1000);
+
+line1="Ends in";
+line2=`${h}h ${m}m ${s}s`;
+line3=endLine1;
+line4=endLine2;
+
+}
+
+else{
+
+line1="Event ended";
+line2="";
+line3="";
+line4="";
+clearInterval(interval);
+
+}
+
+countdownDiv.innerHTML=
+
+`<div class="status">${line1}</div>
+<div class="number">${line2}</div>
+<div class="spacer"></div>
+<div class="eventLine1">${line3}</div>
+<div class="eventLine2">${line4}</div>`;
+
+},1000);
+
+}
+
 </script>
 
 </body>
