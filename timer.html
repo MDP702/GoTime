@@ -57,9 +57,21 @@ body {
   background: linear-gradient(90deg, #ff6b6b, #ffeb3b, #00ffd1);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 15px rgba(255,255,255,0.3);
+  text-shadow: 0 0 10px rgba(255,255,255,0.2);
   display: block;
   margin: 20px 0;
+  animation: subtleShift 10s infinite alternate;
+}
+
+#countdown .eventTime {
+  font-size: 50px; /* smaller day+month/time */
+  margin-top: 10px;
+}
+
+@keyframes subtleShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 50% 50%; }
+  100% { background-position: 100% 50%; }
 }
 
 #linkBox {
@@ -166,7 +178,7 @@ if (!startParam || !endParam) {
             line1 = "<span class='starts'>Starts in:</span>";
             line2 = `<span class='number'>${h}h ${m}m ${s}s</span>`;
             line3 = "Start:";
-            line4 = formatTimeInZone(start);
+            line4 = `<span class='eventTime'>${formatTimeInZone(start)}</span>`;
         } else if (now >= start && now <= end) {
             const diff = end - now;
             const h = Math.floor(diff / (1000*60*60));
@@ -175,7 +187,7 @@ if (!startParam || !endParam) {
             line1 = "<span class='status'>Live:</span>";
             line2 = `<span class='number'>${h}h ${m}m ${s}s</span>`;
             line3 = "End:";
-            line4 = formatTimeInZone(end);
+            line4 = `<span class='eventTime'>${formatTimeInZone(end)}</span>`;
         } else {
             line1 = "<span class='ended status'>Event has ended!</span>";
             line2 = "";
