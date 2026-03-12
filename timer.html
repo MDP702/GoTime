@@ -3,31 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <title>Its Go Time</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 <style>
 body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #2575fc, #6a11cb);
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #50c0e9, #4a90e2);
   color: #fff;
   text-align: center;
-  padding: 60px 20px;
+  padding: 80px 20px;
 }
 #title {
-  font-size: 36px;
-  font-weight: bold;
-  text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+  font-size: 64px; /* very big title */
+  font-weight: 700;
+  margin-bottom: 50px;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
 }
 #countdown {
-  font-size: 28px;
+  font-size: 56px; /* very big timer text */
   margin-top: 30px;
-  padding: 20px;
-  background: rgba(0,0,0,0.3);
-  border-radius: 15px;
+  padding: 30px;
+  background: rgba(0,0,0,0.25);
+  border-radius: 25px;
   display: inline-block;
-  min-width: 300px;
+  min-width: 350px;
+  white-space: pre-line;
 }
-.upcoming { color: #ffce00; }
-.live { color: #00ff6a; }
-.ended { color: #ff3c3c; }
 </style>
 </head>
 <body>
@@ -47,39 +47,42 @@ function formatTimeInZone(date) {
 }
 
 const params = new URLSearchParams(window.location.search);
-const title = params.get('title') || "Its Go Time";
-const start = new Date(params.get('start'));
-const end = new Date(params.get('end'));
+const title = params.get('title') || "";
+const startParam = params.get('start');
+const endParam = params.get('end');
 
-document.getElementById('title').innerText = title;
+if (!startParam || !endParam) {
+    document.getElementById('countdown').innerText = "Error: start or end time missing!";
+    document.getElementById('title').innerText = title;
+} else {
+    const start = new Date(startParam);
+    const end = new Date(endParam);
+    document.getElementById('title').innerText = title;
 
-let timerInterval = setInterval(() => {
-    const now = new Date();
-    const countdownElem = document.getElementById('countdown');
-    let displayText = "";
+    const interval = setInterval(() => {
+        const now = new Date();
+        let displayText = "";
 
-    if (now < start) {
-        const diff = start - now;
-        const h = Math.floor(diff / (1000*60*60));
-        const m = Math.floor((diff % (1000*60*60)) / (1000*60));
-        const s = Math.floor((diff % (1000*60)) / 1000);
-        displayText = `Event starts in: ${h}h ${m}m ${s}s\nStart time: ${formatTimeInZone(start)}`;
-        countdownElem.className = "upcoming";
-    } else if (now >= start && now <= end) {
-        const diff = end - now;
-        const h = Math.floor(diff / (1000*60*60));
-        const m = Math.floor((diff % (1000*60*60)) / (1000*60));
-        const s = Math.floor((diff % (1000*60)) / 1000);
-        displayText = `Event is live! Ends in: ${h}h ${m}m ${s}s\nEnd time: ${formatTimeInZone(end)}`;
-        countdownElem.className = "live";
-    } else {
-        displayText = "Event has ended!";
-        countdownElem.className = "ended";
-        clearInterval(timerInterval);
-    }
+        if (now < start) {
+            const diff = start - now;
+            const h = Math.floor(diff / (1000*60*60));
+            const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+            const s = Math.floor((diff % (1000*60)) / 1000);
+            displayText = `Event starts in: ${h}h ${m}m ${s}s\nStart time: ${formatTimeInZone(start)}`;
+        } else if (now >= start && now <= end) {
+            const diff = end - now;
+            const h = Math.floor(diff / (1000*60*60));
+            const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+            const s = Math.floor((diff % (1000*60)) / 1000);
+            displayText = `Event is live! Ends in: ${h}h ${m}m ${s}s\nEnd time: ${formatTimeInZone(end)}`;
+        } else {
+            displayText = "Event has ended!";
+            clearInterval(interval);
+        }
 
-    countdownElem.innerText = displayText;
-}, 1000);
+        document.getElementById('countdown').innerText = displayText;
+    }, 1000);
+}
 </script>
 
 </body>
