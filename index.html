@@ -15,22 +15,22 @@ body {
   padding: 60px 20px;
 }
 h1 {
-  font-size: 80px; /* super big heading */
+  font-size: 80px;
   margin-bottom: 50px;
   text-shadow: 3px 3px 10px rgba(0,0,0,0.6);
 }
 .card {
-  background: rgba(0,0,0,0.4); /* darker for contrast */
+  background: rgba(0,0,0,0.4);
   padding: 60px;
   border-radius: 30px;
   display: inline-block;
   max-width: 550px;
 }
 label {
-  font-size: 32px; /* bigger labels */
+  font-size: 32px;
 }
 input, button {
-  font-size: 36px; /* huge input/button text */
+  font-size: 36px;
   padding: 20px;
   margin: 16px 0;
   width: 95%;
@@ -38,17 +38,42 @@ input, button {
   border: none;
 }
 input::placeholder {
-  color: #ddd; /* lighter placeholder */
+  color: #ddd;
   opacity: 1;
 }
 button {
-  background-color: #f1c40f; /* bright but soft yellow */
+  background-color: #f1c40f;
   color: #000;
   font-weight: bold;
   cursor: pointer;
   transition: 0.3s;
 }
 button:hover {
+  background-color: #f4d03f;
+}
+#shortLinkBox {
+  margin-top: 20px;
+}
+input#shortLink {
+  font-size: 28px;
+  padding: 16px;
+  width: 80%;
+  border-radius: 12px;
+  border: none;
+  text-align: center;
+}
+button#copyShort {
+  font-size: 28px;
+  padding: 16px;
+  border-radius: 12px;
+  border: none;
+  background-color: #f1c40f;
+  color: #000;
+  font-weight: bold;
+  margin-left: 10px;
+  cursor: pointer;
+}
+button#copyShort:hover {
   background-color: #f4d03f;
 }
 </style>
@@ -67,19 +92,47 @@ button:hover {
   <label>End Time:</label><br>
   <input type="datetime-local" id="endTime"><br>
 
-  <button onclick="openTimer()">Create & Open Timer</button>
+  <button onclick="createTimer()">Create & Open Timer</button>
+</div>
+
+<div id="shortLinkBox" style="display:none;">
+  <input type="text" id="shortLink" readonly>
+  <button id="copyShort" onclick="copyShortLink()">Copy Link</button>
 </div>
 
 <script>
-function openTimer() {
+function createTimer() {
     const title = encodeURIComponent(document.getElementById('eventTitle').value);
     const start = encodeURIComponent(document.getElementById('startTime').value);
     const end = encodeURIComponent(document.getElementById('endTime').value);
 
     if (!title || !start || !end) return alert("Please fill all fields!");
 
-    const url = `timer.html?title=${title}&start=${start}&end=${end}`;
-    window.open(url, '_blank');
+    const fullURL = `${window.location.origin}/timer.html?title=${title}&start=${start}&end=${end}`;
+
+    // Open the timer in a new tab
+    window.open(fullURL, '_blank');
+
+    // Shorten the URL using is.gd API
+    fetch(`https://is.gd/create.php?format=simple&url=${encodeURIComponent(fullURL)}`)
+      .then(response => response.text())
+      .then(shortURL => {
+          document.getElementById('shortLinkBox').style.display = "block";
+          document.getElementById('shortLink').value = shortURL;
+      })
+      .catch(err => {
+          alert("Failed to create short link. You can use the original link.");
+          document.getElementById('shortLinkBox').style.display = "block";
+          document.getElementById('shortLink').value = fullURL;
+      });
+}
+
+function copyShortLink() {
+    const linkInput = document.getElementById("shortLink");
+    linkInput.select();
+    linkInput.setSelectionRange(0, 99999); 
+    document.execCommand("copy");
+    alert("Short link copied to clipboard!");
 }
 </script>
 
