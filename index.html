@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Create Event Timer</title>
+<title>Its Go Time</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 
@@ -18,13 +18,21 @@ flex-direction:column;
 align-items:center;
 }
 
+/* TITLE */
 h1{
-font-size:70px;
+font-size:80px;
 color:white;
-margin-bottom:40px;
-text-shadow:2px 2px 6px rgba(0,0,0,0.5);
+margin-bottom:50px;
+letter-spacing:3px;
+
+text-shadow:
+0 0 10px rgba(255,255,255,0.9),
+0 0 20px rgba(255,255,255,0.7),
+0 0 30px rgba(255,255,255,0.5),
+3px 3px 10px rgba(0,0,0,0.6);
 }
 
+/* MAIN CARD */
 .card{
 background:linear-gradient(145deg,#6FA8DC,#4A90E2);
 border-radius:50px;
@@ -34,7 +42,10 @@ max-width:800px;
 display:flex;
 flex-direction:column;
 gap:20px;
-box-shadow:10px 10px 30px rgba(0,0,0,0.3),-5px -5px 20px rgba(255,255,255,0.2);
+
+box-shadow:
+10px 10px 30px rgba(0,0,0,0.3),
+-5px -5px 20px rgba(255,255,255,0.2);
 }
 
 label{
@@ -51,13 +62,16 @@ border:none;
 text-align:center;
 }
 
+/* BUTTON */
 button{
 margin-top:20px;
 font-size:28px;
 padding:18px;
 border-radius:18px;
 border:none;
+
 background:linear-gradient(135deg,#f1c40f,#f9e79f);
+
 font-weight:bold;
 cursor:pointer;
 }
@@ -66,14 +80,25 @@ button:hover{
 background:linear-gradient(135deg,#f9e79f,#f1c40f);
 }
 
+/* LINK CARD */
 #linkBox{
 margin-top:40px;
+
 background:linear-gradient(145deg,#6FA8DC,#4A90E2);
+
 padding:30px;
 border-radius:40px;
+
 min-width:600px;
 max-width:800px;
-box-shadow:10px 10px 30px rgba(0,0,0,0.3),-5px -5px 20px rgba(255,255,255,0.2);
+
+box-shadow:
+10px 10px 30px rgba(0,0,0,0.3),
+-5px -5px 20px rgba(255,255,255,0.2);
+
+display:none;
+flex-direction:column;
+align-items:center;
 }
 
 #resultLink{
@@ -83,6 +108,7 @@ padding:14px;
 border-radius:14px;
 border:none;
 text-align:center;
+margin-bottom:15px;
 }
 
 </style>
@@ -90,12 +116,12 @@ text-align:center;
 
 <body>
 
-<h1>Create Event Timer</h1>
+<h1>Its Go Time</h1>
 
 <div class="card">
 
 <label>Event Title</label>
-<input id="titleInput" placeholder="Example: Dragon Arena">
+<input id="titleInput" placeholder="Add title">
 
 <label>Start Time</label>
 <input type="datetime-local" id="startInput">
@@ -107,7 +133,7 @@ text-align:center;
 
 </div>
 
-<div id="linkBox" style="display:none">
+<div id="linkBox">
 
 <input id="resultLink" readonly>
 
@@ -120,12 +146,17 @@ text-align:center;
 function createTimer(){
 
 const title=document.getElementById("titleInput").value;
+
 const start=document.getElementById("startInput").value;
+
 const end=document.getElementById("endInput").value;
 
-if(!start||!end){
+if(!start || !end){
+
 alert("Please select start and end time");
+
 return;
+
 }
 
 const baseURL="timer.html";
@@ -135,7 +166,7 @@ const link=
 
 document.getElementById("resultLink").value=link;
 
-document.getElementById("linkBox").style.display="block";
+document.getElementById("linkBox").style.display="flex";
 
 }
 
