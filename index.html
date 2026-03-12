@@ -4,84 +4,98 @@
 <meta charset="UTF-8">
 <title>Global Event Timer</title>
 <style>
-body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: #f0f0f0; }
+body { font-family: Arial, sans-serif; text-align: center; padding: 40px; background: #f0f0f0; }
 h1 { color: #333; }
-input, button { font-size: 16px; padding: 5px; margin: 5px; }
-#countdown { font-size: 28px; margin-top: 20px; white-space: pre-line; }
+input, button { font-size: 16px; padding: 6px; margin: 5px; }
+#countdown { font-size: 24px; margin-top: 20px; white-space: pre-line; }
 </style>
 </head>
 <body>
 
 <h1>Global Event Timer</h1>
 
-<label>Event Time (Your Local Time):</label><br>
-<input type="datetime-local" id="eventTime"><br>
+<label>Event Title:</label><br>
+<input type="text" id="eventTitle" placeholder="Enter event title"><br>
 
-<button onclick="startTimer()">Start Timer</button>
-<button onclick="copyLink()">Copy Shareable Link</button>
+<label>Start Time (Your Local Time):</label><br>
+<input type="datetime-local" id="startTime"><br>
+
+<label>End Time (Your Local Time):</label><br>
+<input type="datetime-local" id="endTime"><br>
+
+<button onclick="createTimer()">Create Timer & Link</button>
 
 <p id="countdown"></p>
 
 <script>
-// Helper: format date in timezone
-function formatTimeInZone(date, tz) {
+// Helper: format date in visitor's timezone
+function formatTimeInZone(date) {
+    const userTZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
     return new Intl.DateTimeFormat([], {
-        timeZone: tz,
+        timeZone: userTZ,
         year: 'numeric', month: '2-digit', day: '2-digit',
         hour: '2-digit', minute: '2-digit', second: '2-digit',
         hour12: false
     }).format(date);
 }
 
-// Start countdown
+// Start countdown function
 let timerInterval;
-function startTimer() {
+function startCountdown(start, end, title) {
     clearInterval(timerInterval);
-
-    const eventInput = document.getElementById('eventTime').value;
-    if (!eventInput) return alert("Please set an event time!");
-    const eventDate = new Date(eventInput);
-    const userTZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-    // Update URL for sharing
-    const url = new URL(window.location);
-    url.searchParams.set('time', eventInput);
-    window.history.replaceState({}, '', url);
-
     timerInterval = setInterval(() => {
         const now = new Date();
-        const diff = eventDate - now;
+        let displayText = title + "\n";
 
-        if (diff <= 0) {
-            document.getElementById('countdown').innerText = "Event Started!";
+        if (now < start) {
+            const diff = start - now;
+            const h = Math.floor(diff / (1000*60*60));
+            const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+            const s = Math.floor((diff % (1000*60)) / 1000);
+            displayText += `Event starts in: ${h}h ${m}m ${s}s\nStart time: ${formatTimeInZone(start)}`;
+        } else if (now >= start && now <= end) {
+            const diff = end - now;
+            const h = Math.floor(diff / (1000*60*60));
+            const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+            const s = Math.floor((diff % (1000*60)) / 1000);
+            displayText += `Event is live! Ends in: ${h}h ${m}m ${s}s\nEnd time: ${formatTimeInZone(end)}`;
+        } else {
+            displayText += "Event has ended!";
             clearInterval(timerInterval);
-            return;
         }
 
-        const hours = Math.floor(diff / (1000*60*60));
-        const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
-        const seconds = Math.floor((diff % (1000*60)) / 1000);
-
-        const eventInTZ = formatTimeInZone(eventDate, userTZ);
-
-        document.getElementById('countdown').innerText =
-            `Time left: ${hours}h ${minutes}m ${seconds}s\nEvent time in your timezone (${userTZ}): ${eventInTZ}`;
+        document.getElementById('countdown').innerText = displayText;
     }, 1000);
 }
 
-// Copy link button
-function copyLink() {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-        alert("Shareable link copied!");
-    });
+// Create shareable link
+function createTimer() {
+    const title = document.getElementById('eventTitle').value;
+    const start = document.getElementById('startTime').value;
+    const end = document.getElementById('endTime').value;
+
+    if (!title || !start || !end) return alert("Please fill in all fields!");
+
+    const url = new URL(window.location);
+    url.searchParams.set('title', title);
+    url.searchParams.set('start', start);
+    url.searchParams.set('end', end);
+    window.history.replaceState({}, '', url);
+
+    startCountdown(new Date(start), new Date(end), title);
+    navigator.clipboard.writeText(url.href).then(() => alert("Shareable link copied!"));
 }
 
-// Load from URL
-const urlParams = new URLSearchParams(window.location.search);
-const sharedTime = urlParams.get("time");
-if (sharedTime) {
-    document.getElementById("eventTime").value = sharedTime;
-    startTimer();
+// Load from URL parameters
+const params = new URLSearchParams(window.location.search);
+const savedTitle = params.get('title');
+const savedStart = params.get('start');
+const savedEnd = params.get('end');
+if (savedTitle && savedStart && savedEnd) {
+    document.getElementById('eventTitle').value = savedTitle;
+    document.getElementById('startTime').value = savedStart;
+    document.getElementById('endTime').value = savedEnd;
+    startCountdown(new Date(savedStart), new Date(savedEnd), savedTitle);
 }
 </script>
 
