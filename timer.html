@@ -5,6 +5,7 @@
 <title>Its Go Time</title>
 <style>
 body { font-family: Arial; text-align: center; padding: 40px; background: #f0f0f0; }
+#title { font-size: 28px; font-weight: bold; }
 #countdown { font-size: 24px; margin-top: 20px; white-space: pre-line; }
 </style>
 </head>
@@ -14,46 +15,49 @@ body { font-family: Arial; text-align: center; padding: 40px; background: #f0f0f
 <p id="countdown"></p>
 
 <script>
+// Helper: format a date in the visitor's timezone
 function formatTimeInZone(date) {
-    const userTZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
     return new Intl.DateTimeFormat([], {
-        timeZone: userTZ,
+        timeZone: tz,
         year: 'numeric', month: '2-digit', day: '2-digit',
         hour: '2-digit', minute: '2-digit', second: '2-digit',
         hour12: false
     }).format(date);
 }
 
-// Get URL parameters
+// Read URL parameters
 const params = new URLSearchParams(window.location.search);
 const title = params.get('title') || "Its Go Time";
 const start = new Date(params.get('start'));
 const end = new Date(params.get('end'));
 
+// Show the event title
 document.getElementById('title').innerText = title;
 
+// Countdown function
 let timerInterval = setInterval(() => {
     const now = new Date();
-    let display = "";
+    let displayText = "";
 
     if (now < start) {
         const diff = start - now;
         const h = Math.floor(diff / (1000*60*60));
         const m = Math.floor((diff % (1000*60*60)) / (1000*60));
         const s = Math.floor((diff % (1000*60)) / 1000);
-        display = `Event starts in: ${h}h ${m}m ${s}s\nStart time: ${formatTimeInZone(start)}`;
+        displayText = `Event starts in: ${h}h ${m}m ${s}s\nStart time: ${formatTimeInZone(start)}`;
     } else if (now >= start && now <= end) {
         const diff = end - now;
         const h = Math.floor(diff / (1000*60*60));
         const m = Math.floor((diff % (1000*60*60)) / (1000*60));
         const s = Math.floor((diff % (1000*60)) / 1000);
-        display = `Event is live! Ends in: ${h}h ${m}m ${s}s\nEnd time: ${formatTimeInZone(end)}`;
+        displayText = `Event is live! Ends in: ${h}h ${m}m ${s}s\nEnd time: ${formatTimeInZone(end)}`;
     } else {
-        display = "Event has ended!";
+        displayText = "Event has ended!";
         clearInterval(timerInterval);
     }
 
-    document.getElementById('countdown').innerText = display;
+    document.getElementById('countdown').innerText = displayText;
 }, 1000);
 </script>
 
