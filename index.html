@@ -4,24 +4,61 @@
 <meta charset="UTF-8">
 <title>Its Go Time</title>
 <style>
-body { font-family: Arial; text-align: center; padding: 40px; background: #f0f0f0; }
-input, button { font-size: 16px; padding: 6px; margin: 5px; }
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: #fff;
+  text-align: center;
+  padding: 60px 20px;
+}
+h1 {
+  font-size: 36px;
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+.card {
+  background: rgba(0,0,0,0.2);
+  padding: 30px;
+  border-radius: 15px;
+  display: inline-block;
+  max-width: 400px;
+}
+input, button {
+  font-size: 16px;
+  padding: 10px;
+  margin: 10px 0;
+  width: 90%;
+  border-radius: 8px;
+  border: none;
+}
+button {
+  background-color: #ffce00;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+button:hover {
+  background-color: #ffd633;
+}
 </style>
 </head>
 <body>
 
 <h1>Its Go Time</h1>
 
-<label>Event Title:</label><br>
-<input type="text" id="eventTitle" value="Its Go Time"><br>
+<div class="card">
+  <label>Event Title:</label><br>
+  <input type="text" id="eventTitle" value="Its Go Time"><br>
 
-<label>Start Time:</label><br>
-<input type="datetime-local" id="startTime"><br>
+  <label>Start Time:</label><br>
+  <input type="datetime-local" id="startTime"><br>
 
-<label>End Time:</label><br>
-<input type="datetime-local" id="endTime"><br>
+  <label>End Time:</label><br>
+  <input type="datetime-local" id="endTime"><br>
 
-<button onclick="openTimer()">Create & Open Timer</button>
+  <button onclick="openTimer()">Create & Open Timer</button>
+</div>
 
 <script>
 function openTimer() {
@@ -31,9 +68,8 @@ function openTimer() {
 
     if (!title || !start || !end) return alert("Please fill all fields!");
 
-    // Open timer.html and send the data via URL parameters
     const url = `timer.html?title=${title}&start=${start}&end=${end}`;
-    window.open(url, '_blank'); // opens in a new tab
+    window.open(url, '_blank');
 }
 </script>
 
