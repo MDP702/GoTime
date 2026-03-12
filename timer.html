@@ -29,30 +29,28 @@ h1#title {
   border-radius: 50px;
   min-width: 600px;
   max-width: 800px;
-  min-height: 500px;
+  padding: 60px 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 80px 50px;
   box-shadow: 10px 10px 30px rgba(0,0,0,0.3), -5px -5px 20px rgba(255,255,255,0.2);
 }
 
 #countdown .number {
-  font-size: 180px; /* bigger, dramatic */
+  font-size: 72px; /* one line countdown */
   font-weight: 700;
   color: #fff;
   text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
-  display: block;
-  margin: 40px 0; /* more space around countdown number */
+  margin: 20px 0;
 }
 
 #countdown .eventTime {
-  font-size: 40px;
+  font-size: 48px; /* bigger than before */
   color: #fff;
   text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
-  margin: 20px 0; /* more spacing between lines */
-  line-height: 1.5;
+  margin: 15px 0;
+  line-height: 1.4;
 }
 
 #linkBox {
@@ -160,8 +158,8 @@ if (!startParam || !endParam) {
 
             line1 = "START";
             line2 = `<span class='number'>${h}h ${m}m ${s}s</span>`;
-            line3 = `<span class='eventTime'>${startLine1}</span>`;
-            line4 = `<span class='eventTime'>${startLine2}</span>`;
+            line3 = `<span class='eventTime'>${startLine1}</span>`;  // Weekday – Time
+            line4 = `<span class='eventTime'>${startLine2}</span>`;  // Day Month Year
         } else if (now >= start && now <= end) {
             const diff = end - now;
             const h = Math.floor(diff / (1000*60*60));
