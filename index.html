@@ -25,10 +25,10 @@ h1 {
 }
 input, button {
   font-size: 22px; /* bigger text */
-  padding: 12px;
+  padding: 16px;
   margin: 12px 0;
   width: 95%;
-  border-radius: 10px;
+  border-radius: 12px;
   border: none;
 }
 button {
@@ -49,7 +49,7 @@ button:hover {
 
 <div class="card">
   <label>Event Title:</label><br>
-  <input type="text" id="eventTitle" value="Its Go Time"><br>
+  <input type="text" id="eventTitle" placeholder="Enter event title here"><br>
 
   <label>Start Time:</label><br>
   <input type="datetime-local" id="startTime"><br>
@@ -69,7 +69,7 @@ function openTimer() {
     if (!title || !start || !end) return alert("Please fill all fields!");
 
     const url = `timer.html?title=${title}&start=${start}&end=${end}`;
-    window.open(url, '_blank'); // open new tab
+    window.open(url, '_blank');
 }
 </script>
 
