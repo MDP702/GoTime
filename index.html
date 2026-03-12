@@ -5,30 +5,30 @@
 <title>Its Go Time</title>
 <style>
 body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #4a90e2, #50c0e9); /* soft blue gradient */
   color: #fff;
   text-align: center;
   padding: 60px 20px;
 }
 h1 {
-  font-size: 36px;
-  margin-bottom: 30px;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  font-size: 48px; /* bigger heading */
+  margin-bottom: 40px;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
 }
 .card {
   background: rgba(0,0,0,0.2);
-  padding: 30px;
-  border-radius: 15px;
+  padding: 40px;
+  border-radius: 20px;
   display: inline-block;
-  max-width: 400px;
+  max-width: 450px;
 }
 input, button {
-  font-size: 16px;
-  padding: 10px;
-  margin: 10px 0;
-  width: 90%;
-  border-radius: 8px;
+  font-size: 22px; /* bigger text */
+  padding: 12px;
+  margin: 12px 0;
+  width: 95%;
+  border-radius: 10px;
   border: none;
 }
 button {
@@ -69,7 +69,7 @@ function openTimer() {
     if (!title || !start || !end) return alert("Please fill all fields!");
 
     const url = `timer.html?title=${title}&start=${start}&end=${end}`;
-    window.open(url, '_blank');
+    window.open(url, '_blank'); // open new tab
 }
 </script>
 
