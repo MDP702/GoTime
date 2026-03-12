@@ -4,9 +4,30 @@
 <meta charset="UTF-8">
 <title>Its Go Time</title>
 <style>
-body { font-family: Arial; text-align: center; padding: 40px; background: #f0f0f0; }
-#title { font-size: 28px; font-weight: bold; }
-#countdown { font-size: 24px; margin-top: 20px; white-space: pre-line; }
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #2575fc, #6a11cb);
+  color: #fff;
+  text-align: center;
+  padding: 60px 20px;
+}
+#title {
+  font-size: 36px;
+  font-weight: bold;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+}
+#countdown {
+  font-size: 28px;
+  margin-top: 30px;
+  padding: 20px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 15px;
+  display: inline-block;
+  min-width: 300px;
+}
+.upcoming { color: #ffce00; }
+.live { color: #00ff6a; }
+.ended { color: #ff3c3c; }
 </style>
 </head>
 <body>
@@ -15,7 +36,6 @@ body { font-family: Arial; text-align: center; padding: 40px; background: #f0f0f
 <p id="countdown"></p>
 
 <script>
-// Helper: format a date in the visitor's timezone
 function formatTimeInZone(date) {
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
     return new Intl.DateTimeFormat([], {
@@ -26,18 +46,16 @@ function formatTimeInZone(date) {
     }).format(date);
 }
 
-// Read URL parameters
 const params = new URLSearchParams(window.location.search);
 const title = params.get('title') || "Its Go Time";
 const start = new Date(params.get('start'));
 const end = new Date(params.get('end'));
 
-// Show the event title
 document.getElementById('title').innerText = title;
 
-// Countdown function
 let timerInterval = setInterval(() => {
     const now = new Date();
+    const countdownElem = document.getElementById('countdown');
     let displayText = "";
 
     if (now < start) {
@@ -46,18 +64,21 @@ let timerInterval = setInterval(() => {
         const m = Math.floor((diff % (1000*60*60)) / (1000*60));
         const s = Math.floor((diff % (1000*60)) / 1000);
         displayText = `Event starts in: ${h}h ${m}m ${s}s\nStart time: ${formatTimeInZone(start)}`;
+        countdownElem.className = "upcoming";
     } else if (now >= start && now <= end) {
         const diff = end - now;
         const h = Math.floor(diff / (1000*60*60));
         const m = Math.floor((diff % (1000*60*60)) / (1000*60));
         const s = Math.floor((diff % (1000*60)) / 1000);
         displayText = `Event is live! Ends in: ${h}h ${m}m ${s}s\nEnd time: ${formatTimeInZone(end)}`;
+        countdownElem.className = "live";
     } else {
         displayText = "Event has ended!";
+        countdownElem.className = "ended";
         clearInterval(timerInterval);
     }
 
-    document.getElementById('countdown').innerText = displayText;
+    countdownElem.innerText = displayText;
 }, 1000);
 </script>
 
