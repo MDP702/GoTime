@@ -6,28 +6,31 @@
 <style>
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #4a90e2, #50c0e9); /* soft blue gradient */
+  background: 
+    linear-gradient(135deg, rgba(74,144,226,0.7), rgba(80,192,233,0.7)), /* semi-transparent gradient */
+    url('https://images.unsplash.com/photo-1529253355930-5cbb4b0b3b72?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed; /* background image */
+  background-size: cover;
   color: #fff;
   text-align: center;
   padding: 60px 20px;
 }
 h1 {
-  font-size: 64px; /* much bigger heading */
+  font-size: 64px;
   margin-bottom: 50px;
-  text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
 }
 .card {
-  background: rgba(0,0,0,0.2);
+  background: rgba(0,0,0,0.35); /* slightly darker to make text readable */
   padding: 50px;
   border-radius: 25px;
   display: inline-block;
   max-width: 500px;
 }
 label {
-  font-size: 24px; /* bigger labels */
+  font-size: 24px;
 }
 input, button {
-  font-size: 28px; /* bigger text for input and button */
+  font-size: 28px;
   padding: 18px;
   margin: 14px 0;
   width: 95%;
