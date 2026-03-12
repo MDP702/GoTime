@@ -33,6 +33,12 @@ body {
   box-shadow: 0 10px 25px rgba(0,0,0,0.5);
   text-align: center;
 }
+#countdown .status {
+  font-size: 80px; /* extra big for Live/Ended */
+  font-weight: 700;
+  color: #ffeb3b;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+}
 #linkBox {
   margin-top: 40px;
 }
@@ -98,7 +104,7 @@ const currentURL = window.location.href;
 document.getElementById('timerLink').value = currentURL;
 
 if (!startParam || !endParam) {
-    document.getElementById('countdown').innerText = "Error: start or end time missing!";
+    document.getElementById('countdown').innerHTML = "<span class='status'>Error: start or end time missing!</span>";
     document.getElementById('title').innerText = title;
 } else {
     const start = new Date(startParam);
@@ -126,19 +132,19 @@ if (!startParam || !endParam) {
             const h = Math.floor(diff / (1000*60*60));
             const m = Math.floor((diff % (1000*60*60)) / (1000*60));
             const s = Math.floor((diff % (1000*60)) / 1000);
-            line1 = "Live:";
+            line1 = "<span class='status'>Live:</span>";
             line2 = `${h}h ${m}m ${s}s`;
             line3 = "End:";
             line4 = formatTimeInZone(end);
         } else {
-            line1 = "Event has ended!";
+            line1 = "<span class='status'>Event has ended!</span>";
             line2 = "";
             line3 = "";
             line4 = "";
             clearInterval(interval);
         }
 
-        document.getElementById('countdown').innerText = `${line1}\n${line2}\n\n${line3}\n${line4}`;
+        document.getElementById('countdown').innerHTML = `${line1}\n${line2}\n\n${line3}\n${line4}`;
     }, 1000);
 }
 </script>
