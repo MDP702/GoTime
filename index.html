@@ -7,45 +7,49 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: 
-    linear-gradient(135deg, rgba(74,144,226,0.7), rgba(80,192,233,0.7)),
-    url('https://www.publicdomainpictures.net/pictures/320000/velka/blue-sky-clouds.jpg') no-repeat center center fixed;
+    linear-gradient(135deg, rgba(52,152,219,0.7), rgba(41,128,185,0.7)),
+    url('YOUR_IMAGE.jpg') no-repeat center center fixed;
   background-size: cover;
   color: #fff;
   text-align: center;
   padding: 60px 20px;
 }
 h1 {
-  font-size: 64px;
+  font-size: 80px; /* super big heading */
   margin-bottom: 50px;
-  text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+  text-shadow: 3px 3px 10px rgba(0,0,0,0.6);
 }
 .card {
-  background: rgba(0,0,0,0.35);
-  padding: 50px;
-  border-radius: 25px;
+  background: rgba(0,0,0,0.4); /* darker for contrast */
+  padding: 60px;
+  border-radius: 30px;
   display: inline-block;
-  max-width: 500px;
+  max-width: 550px;
 }
 label {
-  font-size: 24px;
+  font-size: 32px; /* bigger labels */
 }
 input, button {
-  font-size: 28px;
-  padding: 18px;
-  margin: 14px 0;
+  font-size: 36px; /* huge input/button text */
+  padding: 20px;
+  margin: 16px 0;
   width: 95%;
-  border-radius: 14px;
+  border-radius: 16px;
   border: none;
 }
+input::placeholder {
+  color: #ddd; /* lighter placeholder */
+  opacity: 1;
+}
 button {
-  background-color: #ffce00;
+  background-color: #f1c40f; /* bright but soft yellow */
   color: #000;
   font-weight: bold;
   cursor: pointer;
   transition: 0.3s;
 }
 button:hover {
-  background-color: #ffd633;
+  background-color: #f4d03f;
 }
 </style>
 </head>
