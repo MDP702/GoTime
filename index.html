@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Global Event Timer</title>
+<style>
+body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: #f0f0f0; }
+h1 { color: #333; }
+input, button { font-size: 16px; padding: 5px; margin: 5px; }
+#countdown { font-size: 28px; margin-top: 20px; white-space: pre-line; }
+</style>
+</head>
+<body>
+
+<h1>Global Event Timer</h1>
+
+<label>Event Time (Your Local Time):</label><br>
+<input type="datetime-local" id="eventTime"><br>
+
+<button onclick="startTimer()">Start Timer</button>
+<button onclick="copyLink()">Copy Shareable Link</button>
+
+<p id="countdown"></p>
+
+<script>
+// Helper: format date in timezone
+function formatTimeInZone(date, tz) {
+    return new Intl.DateTimeFormat([], {
+        timeZone: tz,
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: false
+    }).format(date);
+}
+
+// Start countdown
+let timerInterval;
+function startTimer() {
+    clearInterval(timerInterval);
+
+    const eventInput = document.getElementById('eventTime').value;
+    if (!eventInput) return alert("Please set an event time!");
+    const eventDate = new Date(eventInput);
+    const userTZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    // Update URL for sharing
+    const url = new URL(window.location);
+    url.searchParams.set('time', eventInput);
+    window.history.replaceState({}, '', url);
+
+    timerInterval = setInterval(() => {
+        const now = new Date();
+        const diff = eventDate - now;
+
+        if (diff <= 0) {
+            document.getElementById('countdown').innerText = "Event Started!";
+            clearInterval(timerInterval);
+            return;
+        }
+
+        const hours = Math.floor(diff / (1000*60*60));
+        const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
+        const seconds = Math.floor((diff % (1000*60)) / 1000);
+
+        const eventInTZ = formatTimeInZone(eventDate, userTZ);
+
+        document.getElementById('countdown').innerText =
+            `Time left: ${hours}h ${minutes}m ${seconds}s\nEvent time in your timezone (${userTZ}): ${eventInTZ}`;
+    }, 1000);
+}
+
+// Copy link button
+function copyLink() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+        alert("Shareable link copied!");
+    });
+}
+
+// Load from URL
+const urlParams = new URLSearchParams(window.location.search);
+const sharedTime = urlParams.get("time");
+if (sharedTime) {
+    document.getElementById("eventTime").value = sharedTime;
+    startTimer();
+}
+</script>
+
+</body>
+</html>
