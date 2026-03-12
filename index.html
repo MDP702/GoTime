@@ -31,9 +31,9 @@ function openTimer() {
 
     if (!title || !start || !end) return alert("Please fill all fields!");
 
-    // Open the countdown page in a new tab
+    // Open timer.html and send the data via URL parameters
     const url = `timer.html?title=${title}&start=${start}&end=${end}`;
-    window.open(url, '_blank');
+    window.open(url, '_blank'); // opens in a new tab
 }
 </script>
 
