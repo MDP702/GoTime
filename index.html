@@ -4,13 +4,14 @@
 <meta charset="UTF-8">
 <title>Create Timer</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
 
 <style>
 * { box-sizing: border-box; }
 body {
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg,#4a90e2,#50c0e9);
+  font-weight: 300; /* Standard Light weight */
+  background: linear-gradient(135deg, #4a90e2, #50c0e9);
   margin: 0;
   height: 100vh;
   display: flex;
@@ -21,81 +22,92 @@ body {
 
 .main-container {
   width: 95%;
-  max-width: 380px;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  padding: 15px; /* Reduced padding */
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  border: 1px solid rgba(255,255,255,0.3);
+  max-width: 360px;
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
 }
 
 h1 {
-  font-size: 20px; /* Smaller title */
-  color: white;
-  margin: 0 0 12px 0;
+  font-size: 22px;
+  font-weight: 500;
+  color: #2c3e50;
+  margin: 0 0 20px 0;
   text-align: center;
-}
-
-.row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 8px;
+  letter-spacing: 0.5px;
 }
 
 .field {
-  flex: 1;
-  text-align: left;
+  margin-bottom: 15px;
 }
 
 label {
-  color: white;
+  color: #7f8c8d;
   font-size: 11px;
-  font-weight: 600;
   display: block;
-  margin-bottom: 3px;
+  margin-bottom: 5px;
   text-transform: uppercase;
+  letter-spacing: 1.2px;
 }
 
 input {
   width: 100%;
-  padding: 8px;
-  border-radius: 6px;
-  border: none;
-  font-size: 13px;
-  outline: none;
-}
-
-button {
-  width: 100%;
   padding: 10px;
   border-radius: 8px;
+  border: 1px solid #dfe6e9;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  outline: none;
+  color: #2d3436;
+}
+
+input:focus {
+  border-color: #4a90e2;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
   border: none;
-  background: #f1c40f;
-  color: #333;
-  font-weight: bold;
+  background: #4a90e2;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
   cursor: pointer;
-  margin-top: 5px;
+  transition: all 0.3s ease;
 }
 
-#linkBox {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(255,255,255,0.2);
+.btn-confirm {
+  background: #2ecc71;
+}
+
+.btn-open {
+  background: #f1c40f;
+  color: #2d3436;
+}
+
+#linkSection {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px dashed #dfe6e9;
   display: none; 
-  flex-direction: column;
-  gap: 8px;
+  text-align: center;
+  animation: fadeIn 0.4s ease forwards;
 }
 
-.btn-group {
-  display: flex;
-  gap: 5px;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-#resultLink {
-  background: rgba(255,255,255,0.9);
-  font-family: monospace;
-  font-size: 11px;
+.success-msg {
+  color: #27ae60;
+  font-size: 13px;
+  margin-bottom: 12px;
 }
 </style>
 </head>
@@ -104,63 +116,60 @@ button {
 <div class="main-container">
   <h1>Create Timer</h1>
 
-  <div class="field" style="margin-bottom:8px;">
+  <div class="field">
     <label>Event Title</label>
-    <input id="titleInput" placeholder="e.g. Workshop Session">
+    <input id="titleInput" placeholder="e.g. Lunch Break">
   </div>
 
-  <div class="row">
-    <div class="field">
-      <label>Start Time</label>
-      <input type="datetime-local" id="startInput">
-    </div>
-    <div class="field">
-      <label>End Time</label>
-      <input type="datetime-local" id="endInput">
-    </div>
+  <div class="field">
+    <label>Start Time</label>
+    <input type="datetime-local" id="startInput">
   </div>
 
-  <button onclick="createTimer()">Generate Link</button>
+  <div class="field">
+    <label>End Time</label>
+    <input type="datetime-local" id="endInput">
+  </div>
 
-  <div id="linkBox">
-    <label>Your Link</label>
-    <input id="resultLink" readonly>
-    <div class="btn-group">
-      <button onclick="copyLink()" style="background:#fff;">Copy</button>
-      <button onclick="openTimer()" style="background:#fff;">Open</button>
-    </div>
+  <button id="confirmBtn" class="btn-primary btn-confirm" onclick="confirmDates()">Confirm Dates</button>
+
+  <div id="linkSection">
+    <div class="success-msg">✓ Dates confirmed</div>
+    <button class="btn-primary btn-open" onclick="openTimer()">Open Timer Now</button>
   </div>
 </div>
 
 <script>
-function createTimer(){
+let finalURL = "";
+
+function confirmDates() {
   const title = document.getElementById("titleInput").value.trim();
   const start = document.getElementById("startInput").value;
   const end = document.getElementById("endInput").value;
 
-  if(!start || !end){
-    alert("Please select both dates!");
+  if (!start || !end) {
+    alert("Please select both start and end times.");
     return;
   }
 
+  if (new Date(start) >= new Date(end)) {
+    alert("End time must be after the start time.");
+    return;
+  }
+
+  // Generate the link
   const baseURL = "timer.html";
-  // Always uses standard encoding now
-  const link = `${baseURL}?title=${encodeURIComponent(title)}&start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`;
+  finalURL = `${baseURL}?title=${encodeURIComponent(title)}&start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`;
 
-  document.getElementById("resultLink").value = link;
-  document.getElementById("linkBox").style.display = "flex";
+  // Show the confirmation and Open button
+  document.getElementById("linkSection").style.display = "block";
+  document.getElementById("confirmBtn").innerText = "Update Settings";
 }
 
-function copyLink(){
-  const link = document.getElementById("resultLink");
-  link.select();
-  document.execCommand("copy");
-  alert("Link copied!");
-}
-
-function openTimer(){
-  const link = document.getElementById("resultLink").value;
-  if(link) window.open(link,'_blank');
+function openTimer() {
+  if (finalURL) {
+    window.open(finalURL, '_blank');
+  }
 }
 </script>
 
