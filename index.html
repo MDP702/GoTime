@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Create Timer</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
@@ -11,7 +11,7 @@ body{
   font-family:'Poppins',sans-serif;
   background:linear-gradient(135deg,#4a90e2,#50c0e9);
   text-align:center;
-  padding:80px 20px;
+  padding:20px;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -19,55 +19,57 @@ body{
 
 /* TITLE */
 h1{
-  font-size:80px;
+  font-size:clamp(28px, 6vw, 60px);
   color:white;
-  margin-bottom:50px;
-  letter-spacing:3px;
+  margin-bottom:20px;
+  letter-spacing:2px;
   text-shadow:
-    0 0 5px rgba(255,255,255,0.7),
-    0 0 10px rgba(255,255,255,0.5),
-    2px 2px 5px rgba(0,0,0,0.5);
+    0 0 4px rgba(255,255,255,0.7),
+    0 0 8px rgba(255,255,255,0.5),
+    1px 1px 4px rgba(0,0,0,0.5);
 }
 
 /* MAIN CARD */
 .card{
   background:linear-gradient(145deg,#6FA8DC,#4A90E2);
-  border-radius:50px;
-  padding:60px 50px;
-  min-width:600px;
-  max-width:800px;
+  border-radius:20px;
+  padding:20px;
+  width:100%;
+  max-width:360px; /* much smaller card */
   display:flex;
   flex-direction:column;
-  gap:20px;
+  gap:10px;
   box-shadow:
-    10px 10px 30px rgba(0,0,0,0.3),
-    -5px -5px 20px rgba(255,255,255,0.2);
+    5px 5px 15px rgba(0,0,0,0.3),
+    -3px -3px 10px rgba(255,255,255,0.2);
 }
 
 label{
   color:white;
-  font-size:28px;
+  font-size:16px;
   font-weight:700;
 }
 
 input{
-  font-size:24px;
-  padding:14px;
-  border-radius:14px;
+  font-size:16px;
+  padding:8px;
+  border-radius:8px;
   border:none;
   text-align:center;
+  width:100%;
 }
 
 /* BUTTON */
 button{
-  margin-top:20px;
-  font-size:28px;
-  padding:18px;
-  border-radius:18px;
+  margin-top:10px;
+  font-size:16px;
+  padding:10px;
+  border-radius:10px;
   border:none;
   background:linear-gradient(135deg,#f1c40f,#f9e79f);
   font-weight:bold;
   cursor:pointer;
+  width:100%;
 }
 
 button:hover{
@@ -76,15 +78,15 @@ button:hover{
 
 /* LINK CARD */
 #linkBox{
-  margin-top:40px;
+  margin-top:20px;
   background:linear-gradient(145deg,#6FA8DC,#4A90E2);
-  padding:30px;
-  border-radius:40px;
-  min-width:600px;
-  max-width:800px;
+  padding:15px;
+  border-radius:20px;
+  width:100%;
+  max-width:360px; /* match main card */
   box-shadow:
-    10px 10px 30px rgba(0,0,0,0.3),
-    -5px -5px 20px rgba(255,255,255,0.2);
+    5px 5px 15px rgba(0,0,0,0.3),
+    -3px -3px 10px rgba(255,255,255,0.2);
   display:none;
   flex-direction:column;
   align-items:center;
@@ -92,22 +94,22 @@ button:hover{
 
 #resultLink{
   width:90%;
-  font-size:24px;
-  padding:14px;
-  border-radius:14px;
+  font-size:14px;
+  padding:6px;
+  border-radius:8px;
   border:none;
   text-align:center;
-  margin-bottom:15px;
+  margin-bottom:10px;
 }
 
 /* CHECKBOX */
 .checkbox-container{
   color:white;
-  font-size:20px;
-  margin-top:10px;
+  font-size:14px;
+  margin-top:5px;
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:5px;
 }
 </style>
 </head>
@@ -154,10 +156,9 @@ function createTimer(){
   }
 
   const baseURL = "timer.html";
-
   let link;
+
   if(document.getElementById("shortLinkCheckbox").checked){
-    // Shorten by removing unnecessary encoding characters
     const t = encodeURIComponent(title).replace(/%20/g,'_');
     const s = start.replace(/[-:]/g,'').replace('T','-');
     const e = end.replace(/[-:]/g,'').replace('T','-');
