@@ -16,31 +16,31 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden; /* Prevents scroll */
+  overflow: hidden; 
 }
 
 .main-container {
   width: 95%;
-  max-width: 400px;
+  max-width: 380px;
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
-  padding: 20px;
-  border-radius: 20px;
+  padding: 15px; /* Reduced padding */
+  border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   border: 1px solid rgba(255,255,255,0.3);
 }
 
 h1 {
-  font-size: 24px;
+  font-size: 20px; /* Smaller title */
   color: white;
-  margin: 0 0 15px 0;
-  text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+  margin: 0 0 12px 0;
+  text-align: center;
 }
 
 .row {
   display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
 .field {
@@ -50,10 +50,11 @@ h1 {
 
 label {
   color: white;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
+  text-transform: uppercase;
 }
 
 input {
@@ -68,22 +69,20 @@ input {
 button {
   width: 100%;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 8px;
   border: none;
   background: #f1c40f;
   color: #333;
   font-weight: bold;
   cursor: pointer;
-  transition: transform 0.1s;
+  margin-top: 5px;
 }
 
-button:active { transform: scale(0.98); }
-
 #linkBox {
-  margin-top: 15px;
-  padding-top: 15px;
+  margin-top: 12px;
+  padding-top: 12px;
   border-top: 1px solid rgba(255,255,255,0.2);
-  display: none; /* Shown via JS */
+  display: none; 
   flex-direction: column;
   gap: 8px;
 }
@@ -96,15 +95,7 @@ button:active { transform: scale(0.98); }
 #resultLink {
   background: rgba(255,255,255,0.9);
   font-family: monospace;
-}
-
-.checkbox-container {
-  color: white;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-bottom: 10px;
+  font-size: 11px;
 }
 </style>
 </head>
@@ -113,9 +104,9 @@ button:active { transform: scale(0.98); }
 <div class="main-container">
   <h1>Create Timer</h1>
 
-  <div class="field" style="margin-bottom:10px;">
+  <div class="field" style="margin-bottom:8px;">
     <label>Event Title</label>
-    <input id="titleInput" placeholder="e.g. New Year Countdown">
+    <input id="titleInput" placeholder="e.g. Workshop Session">
   </div>
 
   <div class="row">
@@ -129,14 +120,10 @@ button:active { transform: scale(0.98); }
     </div>
   </div>
 
-  <div class="checkbox-container">
-    <input type="checkbox" id="shortLinkCheckbox">
-    <label for="shortLinkCheckbox">Short link format</label>
-  </div>
-
   <button onclick="createTimer()">Generate Link</button>
 
   <div id="linkBox">
+    <label>Your Link</label>
     <input id="resultLink" readonly>
     <div class="btn-group">
       <button onclick="copyLink()" style="background:#fff;">Copy</button>
@@ -152,21 +139,13 @@ function createTimer(){
   const end = document.getElementById("endInput").value;
 
   if(!start || !end){
-    alert("Select dates first!");
+    alert("Please select both dates!");
     return;
   }
 
   const baseURL = "timer.html";
-  let link;
-
-  if(document.getElementById("shortLinkCheckbox").checked){
-    const t = encodeURIComponent(title).replace(/%20/g,'_');
-    const s = start.replace(/[-:]/g,'').replace('T','-');
-    const e = end.replace(/[-:]/g,'').replace('T','-');
-    link = `${baseURL}?title=${t}&start=${s}&end=${e}`;
-  } else {
-    link = `${baseURL}?title=${encodeURIComponent(title)}&start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`;
-  }
+  // Always uses standard encoding now
+  const link = `${baseURL}?title=${encodeURIComponent(title)}&start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`;
 
   document.getElementById("resultLink").value = link;
   document.getElementById("linkBox").style.display = "flex";
@@ -176,7 +155,7 @@ function copyLink(){
   const link = document.getElementById("resultLink");
   link.select();
   document.execCommand("copy");
-  alert("Copied!");
+  alert("Link copied!");
 }
 
 function openTimer(){
